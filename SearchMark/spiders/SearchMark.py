@@ -15,8 +15,8 @@ urls = open('urls.txt', 'r+')
 class ExampleSpider(scrapy.Spider):
     name = 'SearchMark'
     start_urls = []
-    for line in urls:
-        target = 'www.%s' % line
+    for line in range(100, 199):
+        target = 'www.114huoche.com/conn%s' % line
         result = open('domain_1.txt', 'r+')
         for line in result:
             start_urls.append(line.replace('%s', target))

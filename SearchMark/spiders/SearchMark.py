@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy.selector import Selector
-from scrapy.spidermiddlewares.httperror import HttpError
-from twisted.internet.error import DNSLookupError
-from twisted.internet.error import TimeoutError, TCPTimedOutError
 from twisted.web._newclient import ResponseNeverReceived
 from twisted.internet.error import DNSLookupError
+from random import sample
 
 success = open('success.txt', 'w+')
 error = open('error.txt', 'w+')
@@ -15,11 +13,11 @@ urls = open('urls.txt', 'r+')
 class ExampleSpider(scrapy.Spider):
     name = 'SearchMark'
     start_urls = []
-    for line in range(100, 199):
-        target = 'www.114huoche.com/conn%s' % line
+    for line in urls:
+        target = 'www.%s' % line
         result = open('domain_1.txt', 'r+')
         for line in result:
-            start_urls.append(line.replace('%s', target))
+            start_urls.append(line.replace('%s', target).strip('\n'))
         result.close()
 
     def parse(self, response):
@@ -36,3 +34,9 @@ class ExampleSpider(scrapy.Spider):
             print('no response ')
         except DNSLookupError:
             error.write(response.url + ' -- dns error')
+
+
+def get_char(num):
+    chars = 'zyxwvutsrqponmlkjihgfedcba'
+    result = ''.join(sample(chars, num))
+    return result
